@@ -1,0 +1,100 @@
+\documentclass[12pt]{niuthesis}
+% \documentclass[12pt,singlespacing]{niuthesis}
+
+% some packages are loaded here
+\usepackage{latexsym}		% to get LASY symbols
+\usepackage{graphicx}		% to insert PostScript figures
+\usepackage{rotating}           % defines sidways table and figure env.
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{apacite}
+\usepackage{color}
+\bibliographystyle{apacite}
+% \usepackage{hyperref}		% to insert hyperrefs
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some LaTeX macros
+
+\newcommand{\twochoices}[2]{\left\{ \begin{array}{lcc}
+        \displaystyle #1 \\ \vspace{-10pt} \\
+        \displaystyle #2 \end{array} \right. } %}
+
+\newcommand{\twovec}[2]{\left(\begin{array}{c} #1 \\ #2 \end{array}\right)}
+
+\newcommand{\twomatrix}[4]{\left(\begin{array}{cc} #1 & #2 \\ 
+     #3 & #4 \end{array}\right)}
+
+\newcommand{\red}[1]{{\color{red} #1}}
+\newcommand{\blue}[1]{{\color{blue} #1}}
+\newcommand{\green}[1]{{\color{magenta} #1}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+% Uncomment the following line for a List of Symbols
+% \newcommand{\listofXXX}{\input{symbols}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Choose the chapter(s) / files you want to work with
+
+%%% use this to compile all chapters
+\def\files{intro,ch1,ch2,conclusion,refs,app1,app2}
+
+%%% use this to work with only one chapter
+% \def\files{ch2}
+
+\includeonly{\files}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{Polynomial Optimization using Semidefinite Programming}
+
+\author{Michael D. Smith}
+
+\major{Computational Mathematics}
+\degree{Thesis}{M.S.}{Master of Science}
+\degreedate{May}{2018}
+\department{Department of Mathematical Sciences}
+\director{Nathan Krislock}
+
+\begin{abstract}
+  In this thesis, our goal is to solve the problem
+  \begin{displaymath}
+    \textnormal{Maximize } \gamma \textnormal{ subject to } p(x) - \gamma \textnormal{ is nonnegative.}
+  \end{displaymath}
+  We will show how we can reformulate this problem using semidefinite matrices to create an optimization problem that can handle multiple variables and constraints. 
+  
+  Our discussion will cover Lagrangian duality and conic programming, followed by a discussion on how nonnegative polynomials can be approximated by sums of squares. We will use this approximation to create our semidefinite programming problems. This will lead us to being able to solve the problem of wireless coverage using minimum transmission.
+\end{abstract}
+
+\begin{acknowledgments}
+  I would like to thank my friends, family, and wife, Jennifer, for their constant love and moral support throughout all of my studies. These are the people who have helped to keep me sane. 
+  
+  I would like to thank Dr. Sien Deng and Dr. Jose Yunier Bello Cruz for agreeing to be on my defense committee. Your time and help with my studies is greatly appreciated.
+  
+  Most of all, I would like to thank Dr. Nathan Krislock for advising me throughout this entire process. You have been my teacher, proof reader, career coach, technical support, and so much more. Thank you for all of the hard work and long hours you have put in helping me prepare this thesis. 
+\end{acknowledgments}
+
+\begin{dedication}
+  To Jennifer, for helping to keep my hopes and spirits up through this long process.
+\end{dedication}
+
+% comment this to suppress prologue
+\MakeThesisPrologue % includes table of contents
+% \tableofcontents
+
+\include{intro}
+\include{ch1}		% file with Chapter 1 contents
+\include{ch2}		% file with Chapter 2 contents
+\include{conclusion}
+\bibliography{biblio}		% file with references
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Appendices
+
+\appendix
+%\include{app1}			% file with Appendix A contents
+%\include{app2}			% file with Appendix B contents
+
+\end{document}

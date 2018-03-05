@@ -1,0 +1,627 @@
+% !TEX root = mythesis.tex
+
+% In section 1.1.5, I note that the term "relint" (the relative interior) would be defined in Appendix A. I need to make sure this happens at a later date. I also do this with the indicator funcition in section 1.5.1.
+
+	\chapter{Mathematical Background}		% chapter 2
+	\label{introchap}		% for reference (\eqref{introchap})
+	
+	This chapter will give us a theoretical framework for understanding semidefinite programming. We will start with an introduction to the Lagrangian dual problem. Many optimization problems utilize a dual problem, and our hope is to give some explanation as to why they do. 
+	
+	This chapter also introduces us to three types of mathematical optimization: linear programming, conic programming, and semidefinite programming. The purpose is to provide motivation for studying semidefinite programming. 
+	
+	\section{Lagrangian Dual Problem}
+	
+	Sometimes we are faced with optimization problems that are particularly difficult to solve. As such, we may wish to look at a related problem that is easier to solve. We also would like to have some defined conditions at which we can obtain our optimal solution. The purpose of this section is to provide a framework for which we can formulate a related problem and determine some conditions with which we can obtain an optimal solution. The information in this section will be primarily adapted from \cite{boyd2004convex}.
+
+	When discussing this topic, we will often reference whether or not our functions are convex. While it is not necessary for our optimization problems to contain only convex functions, we will find that they aid in our ability to obtain optimal values for our optimization problems. As such, we will define them here. A \emph{convex function} $f: \mathbf{R}^n \rightarrow \mathbf{R}$ is a function that satisfies
+	$$
+	f (\alpha x + (1 - \alpha) y) \leq \alpha f(x) + (1 - \alpha) f(y)
+	$$
+	for all $x,y \in \mathbf{R}^n$ and all $\alpha \in [0,1]$. An optimization problem will be considered a \emph{convex optimization problem} if it is attempting to minimize a convex function and all of its constraints are also convex functions of the form $g(x) \leq \alpha$. 
+	
+	\subsection{Lagrangian}
+
+	Consider an optimization problem in standard form:
+	\begin{equation} \label{Std Form Optimization}
+		\begin{aligned}
+			\textnormal{Minimize } & f_0 (x) \\
+			\textnormal{subject to } & f_i (x) \leq 0, & i = 1 \dots m,\\
+			& h_j (x) \leq 0, & j = 1 \dots p,
+		\end{aligned}
+	\end{equation}	
+	with $x \in \mathbf{R}^n$ and assuming that the domain $D = \bigcap_{i = 0}^m \mathbf{dom} f_i \cap \bigcap_{j = 1}^p \mathbf{dom} h_j$, where $\mathbf{dom}f$ is the domain of $f$, is nonempty. We will denote the optimal value of \eqref{Std Form Optimization} as $p^*$. The basic idea behind Lagrangian duality is to transform the objective function by adding a weighted sum of the constraints to it. We define the \emph{Lagrangian} $L: \mathbf{R}^n \times \mathbf{R}^m \times \mathbf{R}^p \rightarrow \mathbf{R}$ of this problem as 
+	\begin{equation} \label{Lagrangian}
+		L(x, \lambda, \nu) = f_0 (x) + \sum_{i = 1}^{m} \lambda_i f_i (x) + \sum_{j = 1}^{p} \nu_j h_j (x),
+	\end{equation}
+	with $\mathbf{dom} L = D \times \mathbf{R}^m \times \mathbf{R}^p$. We call $\lambda$ and $\nu$ the \emph{dual variables} or the \emph{Lagrangian multiplier vectors} associated with \eqref{Std Form Optimization}. 
+	
+	\subsection{The Lagrange Dual Function}
+
+	We define the \emph{Lagrange dual function} (or just \emph{dual function}) $g: \mathbf{R}^m \times \mathbf{R}^p \rightarrow \mathbf{R}$ as the minimum value of the Lagrangian over $x$. So for $\lambda \in \mathbf{R}^m , \nu \in \mathbf{R}^p$, 
+	\begin{equation} \label{dual function}
+		g(\lambda, \nu) = \inf_{x \in D} L(x, \lambda, \nu) = \inf_{x \in D} \left(f_0 (x) + \sum_{i = 1}^{m} \lambda_i f_i (x) + \sum_{j = 1}^{p} \nu_j h_j (x)\right).
+	\end{equation}
+	The dual function takes on the value of $- \infty$ when the Lagrangian is unbounded below in $x$. We also restrict $\lambda \geq 0$. With this restriction, we can show that the dual function provides a lower bound for our optimal value $p^*$ of \eqref{Std Form Optimization}. Suppose $\tilde{x}$ is a feasible point for problem \eqref{Std Form Optimization}. Then $f_i (\tilde{x}) \leq 0, h_j (\tilde{x}) = 0, $ and $\lambda \geq  0$, so we have 
+	$$
+	\sum_{i = 1}^{m} \lambda_i f_i (\tilde{x}) + \sum_{j = 1}^{p} \nu_j h_j (\tilde{x}) \leq 0,
+	$$
+	since the first summation is non-positive and the second summation is zero. Thus,
+	$$
+	L(\tilde{x}, \lambda, \nu) = f_0 (\tilde{x}) + \sum_{i = 1}^{m} \lambda_i f_i (\tilde{x}) + \sum_{j = 1}^{p} \nu_j h_j (\tilde{x}) \leq f_0 (\tilde{x}).
+	$$
+	This gives us
+	$$
+	g(\lambda, \nu) = \inf_{x \in D} L(x, \lambda, \nu) \leq L(\tilde{x}, \lambda, \nu) \leq f_0 (\tilde{x}),
+	$$
+	and as such, 
+	\begin{equation} \label{Primal Lower Bound}
+		g(\lambda, \nu) \leq p^*.
+	\end{equation}
+	
+	\subsection{The Lagrange Dual Problem}
+	Now that we have found an equation related to our original problem \eqref{Std Form Optimization} and know that this problem will always provide a lower bound to our desired solution, we can attempt to maximize \eqref{dual function} to provide the closest lower bound possible. This results in us formulating the \emph{Lagrange dual problem} (or just \emph{dual problem}) for problem \eqref{Std Form Optimization}:
+	\begin{equation} \label{dual problem}
+		\begin{aligned}
+			\textnormal{Maximize } & g(\lambda, \nu) \\
+			\textnormal{subject to } & \lambda \geq 0.
+		\end{aligned}
+	\end{equation}
+	
+	Now that we have this context, we can say that \eqref{Std Form Optimization} is typically referred to as the \emph{primal problem}. We can also now define the term \emph{dual feasible}, which is used to describe a pair $(\lambda, \nu)$ that satisfies $\lambda \geq 0$ and $g( \lambda, \nu) > - \infty$. That means that the pair $(\lambda, \nu)$ is feasible for the dual problem. We say that if $(\lambda^* , \nu^*)$ provides the optimal value for \eqref{dual problem}, then they are the \emph{dual optimal} or \emph{optimal Lagrange multipliers} for that problem.
+	
+	It is important to note that \eqref{dual problem} is a convex problem because its objective function is \emph{concave} (meaning that $-g(\lambda, \nu)$ is convex) and its constraint is convex, and maximizing a concave function is equivalent to minimizing a convex function. This does not make any assumptions on the convexity of the primal problem \eqref{Std Form Optimization}. 
+	
+	\subsection{Weak Duality and the Duality Gap}
+	 We refer to the optimal value of \eqref{dual problem} as $d^*$. By definition, $d^*$ is the best possible lower bound that we can obtain on the primal problem \eqref{Std Form Optimization} from the Lagrangian dual function \eqref{dual function}. Applying our earlier observation \eqref{Primal Lower Bound} to \eqref{dual problem}, we see that
+	\begin{equation} \label{Weak Duality}
+		d^* \leq p^*.
+	\end{equation}
+	This an important property known as \emph{weak duality}. We will always have this property, as this does not make any assumptions as to whether or not the primal problem \eqref{Std Form Optimization} is convex. 
+	
+	The difference $p^* - d^*$ is referred to as the \emph{optimal duality gap}, since it is the difference between the optimal solutions for the primal and dual problems. Because we always have weak duality, the duality gap is always nonnegative. 
+	
+	\subsection{Strong Duality and Constraint Qualifications}
+	
+	While weak duality is a useful feature, our goal is to find an exact optimal value for the primal problem if possible. For this, we will need more than just a lower bound on $p^*$. Suppose that equality 
+	\begin{equation} \label{Strong Duality}
+		d^* = p^*
+	\end{equation}
+	holds. Then the duality gap is zero, and we say that \emph{strong duality} holds. 
+	
+	Strong duality is an incredibly useful feature, as it allows us to solve either the primal or dual problem in order to find our desired optimal value. However, we are typically not guaranteed to have strong duality. If primal problem is a convex optimization problem, i.e.,~of the form 
+	$$
+		\begin{aligned}
+			\textnormal{Minimize } & f_0 (x) \\
+			\textnormal{subject to } & f_i (x) \leq 0, & i = 1 \dots m,\\
+			& Ax = b, 
+		\end{aligned}	
+	$$
+	we often (but not always) find that strong duality holds. There are many results which impose other conditions on the problem that establish strong duality. We call such conditions \emph{constraint qualifications}. 
+	
+	A simple example of a constraint qualification is \emph{Slater's constraint qualification}. It states that if the primal problem is convex and $\exists x \in $ \textbf{relint} $D$ (defined as $\textnormal{relint}(C) := \{x \in C \mid \exists \epsilon > 0, B(x,\epsilon) \cap \textnormal{aff}(C) \subseteq C\}$,
+	where $B(x, \epsilon) := \{y \in \mathbf{R}^n \mid \textnormal{ } \|x-y\|_2 \leq \epsilon\}$ and $\textnormal{aff}(C)$ is the smallest affine set containing $C$) such that 
+	\begin{equation} \label{Slater's Condition}
+		f_i (x) < 0, \quad i = 1, \dots, m, \quad Ax = b,
+	\end{equation}
+	then strong duality holds. Such a point $x$ is referred to as \emph{strictly feasible} since the inequalities hold strictly.  A proof of Slater's constraint qualification can be found on page 234 of \cite{boyd2004convex}. Slater's condition also implies that the dual optimal value is attained when $d^* > - \infty$. 
+	
+	\subsection{KKT Optimality Conditions}
+	
+	Now that we understand strong duality, it is worthwhile to observe some properties that we will have if it holds. The \emph{Karush-Kuhn-Tucker} (KKT) conditions provide us with these properties. As we will see, they are more useful to us if our primal problem is convex. This is because the KKT conditions provide necessary and sufficient conditions on optimality if we know that our primal problem is convex. However, we will not assume that \eqref{Std Form Optimization} is convex unless otherwise stated. 
+	
+	\textbf{Certificate of suboptimality:} If we can find a single dual feasible pair $(\lambda, \nu)$, we have a lower bound on the optimal value of the primal problem $p^*$ because of \eqref{Weak Duality}. We say then that $(\lambda, \nu)$ provides a \emph{certificate} that $p^* \geq g(\lambda, \nu)$. If we also have a primal feasible $x$, then we define the \emph{duality gap} between $x$ and $(\lambda, \nu)$ as
+	$$
+		f_0 (x) - g(\lambda, \nu).
+	$$	
+	These feasible points provide us an interval for the optimal values $p^*$ and $d^*$:
+	$$
+		p^* \in [g(\lambda, \nu), f_0 (x)], \quad d^* \in [g(\lambda, \nu), f_0 (x)].
+	$$
+	If the duality gap is zero, then we have strong duality, and as such the primal optimal is $x$ and the dual optimal pair is $(\lambda, \nu)$. 
+	
+	\textbf{Complementary slackness:} Suppose that the primal and dual optimal values are attained and strong duality holds. Let $x^*$ be the primal optimal and $(\lambda^*, \nu^*)$ be the dual optimal pair. Then we have 
+	$$
+	\begin{aligned}
+		f_0 (x^*) &= g(\lambda^*, \nu^*)\\
+		&= \inf_{x} \left( f_0 (x) + \sum_{i=1}^{m} \lambda_i^* f_i (x) + \sum_{j = 1}^{p} \nu_j^* h_j (x) \right)\\
+		& \leq f_0 (x^*) + \sum_{i=1}^{m} \lambda_i^* f_i (x^*) + \sum_{j = 1}^{p} \nu_j^* h_j (x^*)\\
+		& \leq f_0 (x^*).
+	\end{aligned}
+	$$
+	The first line comes from strong duality \eqref{Strong Duality}. The second line is the definition of the dual function \eqref{dual function}. The third line comes from the definition of infimum. The last line is because $f_i (x^*) \leq 0, h_j (x^*) = 0, $ and $\lambda \geq  0$. Because of this, we can see that $f_0 (x^*) + \sum_{i=1}^{m} \lambda_i^* f_i (x^*) + \sum_{j = 1}^{p} \nu_j^* h_j (x^*) = f_0 (x^*)$, and as a result,
+	$$
+		\sum_{i=1}^{m} \lambda_i^* f_i (x^*) = 0.
+	$$
+	Since each term in the summation is nonpositive, we have
+	\begin{equation} \label{Complementary Slackness}
+		\lambda_i^* f_i (x^*) = 0, \quad i = 1, \dots m.
+	\end{equation}
+	This is a result known as \emph{complementary slackness}. It says that for a primal optimal $x^*$ and a dual optimal pair $(\lambda^*, \nu^*)$, if strong duality holds, then 
+	$$
+		\lambda_i^* > 0 \implies f_i (x^*) = 0 \qquad \textbf{and} \qquad f_i (x^*) < 0 \implies \lambda_i^* = 0. 
+	$$
+	This means that the $i$th optimal Lagrange multiplier is zero unless the $i$th constraint is active at the optimum.
+	
+	\textbf{KKT Optimality Conditions:} One of the things that we need to assume for the KKT optimality conditions is for $f_0 , f_1, \dots , f_m, h_1, h_2, \dots, h_p$ to be differentiable. 
+	
+	When the primal problem is nonconvex, let $x^*$ and $(\lambda^*, \nu^*)$ be any primal and dual optimal points with zero duality gap. Note here we are assuming that strong duality holds. Because $x^*$ minimizes $L(x, \lambda^*, \nu^*)$ over $x$, it follows that its gradient must equal zero at $x^*$. As such, we have that 
+	$$
+		\nabla f_0 (x^*) + \sum_{i=1}^{m} \lambda_i^* \nabla f_i (x^*) + \sum_{j=1}^{p} \nu_j^* \nabla h_j (x^*) = 0.
+	$$
+	Therefore, we have 
+	\begin{equation} \label{nonconvex KKT}
+		\begin{aligned}
+			f_i (x^*)& &\leq \quad &0,\qquad & i = 1, \dots, m, \\
+			h_j (x^*)& &= \quad &0,\qquad & j = 1, \dots, p, \\
+			\lambda_i^*& &\geq \quad &0, \qquad & i = 1, \dots, m, \\
+			\lambda_i^* f_i (x^*)& &= \quad &0, \qquad & i = 1, \dots m, \\
+			\nabla f_0 (x^*) + \sum_{i=1}^{m} \lambda_i^* \nabla f_i (x^*) + \sum_{j=1}^{p} \nu_j^* \nabla h_j (x^*)& &= \quad &0.
+		\end{aligned}
+	\end{equation}
+	 These are known as the KKT conditions. 
+	 
+	 When the primal problem is convex, we will claim that the KKT conditions are also sufficient for the points to be primal and dual optimal, i.e., if $f_i$ are convex and $h_j$ are affine, and $\tilde{x}, \tilde{\lambda}, \tilde{\nu}$ are any points that satisfy the KKT conditions
+	 
+	 \begin{equation} \label{convex KKT}
+		 \begin{aligned}
+			 f_i (\tilde{x})& &\leq \quad &0,\qquad & i = 1, \dots, m, \\
+			 h_j (\tilde{x})& &= \quad &0,\qquad & j = 1, \dots, p, \\
+			 \tilde{\lambda}_i& &\geq \quad &0, \qquad & i = 1, \dots, m, \\
+			 \tilde{\lambda}_i f_i (\tilde{x})& &= \quad &0, \qquad & i = 1, \dots m, \\
+			 \nabla f_0 (\tilde{x}) + \sum_{i=1}^{m} \tilde{\lambda}_i \nabla f_i (\tilde{x}) + \sum_{j=1}^{p} \tilde{\nu}_j \nabla h_j (\tilde{x})& &= \quad &0,
+		 \end{aligned}
+	 \end{equation}
+	 then  $\tilde{x}, \tilde{\lambda}$, and $\tilde{\nu}$ are primal and dual optimal, respectively, and there is zero duality gap. 
+	 
+	 We will now justify this claim. The first two lines of \eqref{convex KKT} let us know that $\tilde{x}$ is primal feasible. The third line gives us that $L(x,\tilde{\lambda}, \tilde{\nu})$ is convex in $x$. The final line lets us see that the gradient of $L$ vanishes with respect to $x$ when $x = \tilde{x}$, so it follows that $L(x,\tilde{\lambda}, \tilde{\nu})$ is minimized with respect to $x$ by $\tilde{x}$. We can then see that 
+	 $$
+	 \begin{aligned}
+		 g(\tilde{\lambda},\tilde{\nu}) &= L(\tilde{x}, \tilde{\lambda}, \tilde{\nu}) \\
+		 &= f_0 (\tilde{x}) + \sum_{i=1}^{m} \tilde{\lambda}_i f_i (\tilde{x}) + \sum_{j = 1}^{p} \tilde{\nu} h_j (\tilde{x}) \\
+		 &= f_0 (\tilde{x}),
+	 \end{aligned}
+	 $$
+	where the last line comes from the facts that $h_j (\tilde{x}) = 0$ and $\tilde{\lambda}_i f_i (\tilde{x}) = 0$. Therefore, $\tilde{x}$ and $(\tilde{\lambda}, \tilde{\nu})$ have zero duality gap and are primal and dual optimal. What we have shown is that for any convex optimization problem with differentiable objective and constraint functions that satisfies Slater's condition \eqref{Slater's Condition}, the KKT conditions provide necessary and sufficient conditions for optimality. That is, since Slater's condition implies that the optimal duality gap is zero and that the dual optimum is obtained, $x$ is optimal if and only if there exists $(\lambda, \nu)$ that satisfy the KKT conditions with $x$. 
+	
+	The KKT conditions are an important part of optimization. This is because they provide a powerful result for convex problems. As such, many convex optimization algorithms are based around methods for solving for the KKT conditions. 
+	
+	
+	\section{Linear Programming}
+	
+	The most commonly used tool for mathematical optimization is linear programming. This can be attributed to its simplicity and efficiency, as well as its ability to handle a large number of real world applications. The majority of the remaining material in this chapter is adapted from the second chapter of \cite{BlekhermanGrigoriy;ParriloPabloA.;Thomas2013}, unless otherwise noted. 
+	
+	\subsection{Problem Formulation}
+
+	Linear programming is the problem of finding the minimal value of a linear function subject to linear constraints. It typically has the following standard form:
+	\begin{equation} \label{LP-P} \tag{LP-P}
+		\begin{split}
+			\textnormal{Minimize } & c^T x \\
+			\textnormal{subject to } & Ax = b, \\
+			& x \geq 0.
+		\end{split}
+	\end{equation}
+	This is called the $\bf{primal}$ $\bf{problem}$ of the linear program, denoted henceforth as \eqref{LP-P}. To solve these problems, we can use the Lagrangian to form a $\bf{dual}$ $\bf{problem}$ for the linear problem, denoted henceforth as \eqref{LP-D}. In order to formulate \eqref{LP-D}, we first observe that the Lagrangian of \eqref{LP-P} is
+
+	$$
+	L(x, \lambda, \nu) = c^T x - \sum_{i = 1}^{n} \lambda_i x_i + \nu^T (b - Ax) = b^T \nu + (c - A^T \nu - \lambda)^T x,
+	$$
+	which results in a dual function of
+	$$
+		g(\lambda, \nu) = \inf_x L(x, \lambda, \nu) = b^T \nu + \inf_x (c - A^T \nu - \lambda)^T x.
+	$$	
+	Since the infimum term is linear, it equals $-\infty$ unless $c - A^T \nu - \lambda = 0$. Thus, we can rewrite our dual function as
+	$$
+	g(\lambda, \nu) = 
+	\begin{cases}
+		b^T \nu, &\textnormal{if } c - A^T \nu - \lambda = 0,\\
+		-\infty, &\textnormal{otherwise.}
+	\end{cases}
+	$$
+	Therefore, the standard form of \eqref{LP-D} is as follows:
+		\begin{equation} \label{LP-D} \tag{LP-D}
+			\begin{split}
+				\textnormal{Maximize } & b^T \nu \\
+				\textnormal{subject to } & c - A^T \nu - \lambda = 0, \\
+				& \lambda \geq 0, 
+			\end{split}
+		\end{equation}
+	or rewritten as, 
+	\begin{equation} 
+		\begin{split}
+			\textnormal{Maximize } & b^T \nu \\
+			\textnormal{subject to } & c - A^T \nu \geq 0.
+		\end{split}
+	\end{equation}
+	There is also an inequality form for linear programming problems. This takes the form
+	\begin{equation} 
+		\begin{split}
+			\textnormal{Minimize } & c^T x \\
+			\textnormal{subject to } & Ax \leq b.
+		\end{split}
+	\end{equation}
+	 In this case, the Lagrangian is
+	$$
+	L(x, \lambda) = c^T x + \lambda^T (b - Ax) = b^T \lambda + (c - A^T \lambda)^T x,
+	$$
+	which results in a dual function of
+	$$
+	g(\lambda) = \inf_x L(x, \lambda) = b^T \lambda + \inf_x (c - A^T \lambda)^T x.
+	$$	
+	Once again, since the infimum term is linear, it equals $-\infty$ unless $c - A^T \lambda = 0$. Thus, we can rewrite our dual function as
+	$$
+	g(\lambda, \nu) = 
+	\begin{cases}
+		b^T \lambda, &\textnormal{if } c - A^T \lambda= 0,\\
+		-\infty, &\textnormal{otherwise.}
+	\end{cases}
+	$$
+	Therefore, the dual problem is as follows:
+	\begin{equation} 
+		\begin{split}
+			\textnormal{Maximize } & b^T \lambda \\
+			\textnormal{subject to } & c - A^T \lambda= 0, \\
+			& \lambda \geq 0. 
+		\end{split}
+	\end{equation}
+	
+	\subsection{Simple Examples}
+	
+	\textbf{Example 1:}
+	The following example of standard form linear programming comes from page 4 of \cite{BlekhermanGrigoriy;ParriloPabloA.;Thomas2013}. While we will not go into the steps for solving here, our numerical solvers and their methods will be discussed by the end of this chapter. 
+	
+	Consider the following linear programming problem: 
+	\begin{equation} \label{lp primal simple example 1}
+		\begin{aligned}
+			&\textnormal{Minimize } x_1 - 8x_2 \\
+			&\textnormal{subject to} \\
+			&-x_1 + 3x_2 + x_3 &= 4, \\
+			&4x_1 - x_2 + x_4 &= 6, \\
+			&x_1, x_2, x_3, x_4 &\geq 0.
+		\end{aligned}
+	\end{equation}
+	The optimal solution for this problem is that $x^* = (2, 2, 0, 0)$ with an optimal value $p^* = -14$. 
+	
+	The corresponding dual problem is
+	\begin{equation} \label{lp dual simple example 1}
+		\begin{aligned}
+			&\textnormal{Maximize } 4y_1 + 6y_2\\
+			&\textnormal{subject to} \\
+			&-y_1 + 4y_2 &\leq 1, \\
+			&3y_1 - y_2 &\leq -8, \\
+			&y_1, y_2 &\leq 0.
+		\end{aligned}
+	\end{equation}
+	Here, the optimal solution is $y^* = (-\frac{31}{11}, -\frac{5}{11})$ with an optimal value $d^* = -14$. Notably, strong duality does indeed hold since $p^* = d^* = -14$.
+	
+	\textbf{Example 2:} The following example of the inequality form for linear programming is adapted from page 30 of \cite{ManagementScience}.
+	
+	Springson, Inc., is a small textbook printing company whose management is trying to determine how many paperback and hardcover versions of a new textbook to print. Springson's distributor is excited about this new book, as it claims to have a proof of one of the millennial problems, and has decided to buy all of the books Springson manages to print. Knowing this, Springson would like to maximize the amount of revenue that it brings in. 
+	
+	In order to print a textbook, each textbook is required to go through three steps:
+	\begin{itemize}
+		\item Printing.
+		
+		\item Binding.
+		
+		\item Inspection and packaging.
+	\end{itemize}
+	
+	The director of printing analyzed the steps for each type of book. A paperback book will require $\frac{1}{2}$ hour in the printing department, 2 hours in the binding department, and 1 hour for inspection and packaging. The paperback books will be sold for $\$48$ each. A hardcover book will require $\frac{3}{4}$ hour in the printing department, 3 hours in the binding department, and 1 hour for inspection and packaging. The hardcover books will be sold for $\$76$ each. There are 450 hours available for printing, 1200 hours available for binding, and 500 hours available for inspection and packaging. 
+	
+	In order to maximize the revenue made by Springson, Inc., we will create a linear program. Since we want to maximize revenue, we also want to minimize the negative of our revenue. Our primal problem is
+	\begin{equation} \label{lp primal simple example 2}
+		\begin{aligned}
+			&\textnormal{Minimize } -48 x_1 - 76 x_2 \\
+			&\textnormal{subject to } \\
+			&0.5x_1 + 0.75 x_2 &\leq 450, \\
+			&2x_1 +3x_2 &\leq 1200, \\
+			&x_1 +x_2 &\leq 500, \\
+			&	x \geq 0,
+		\end{aligned}
+	\end{equation}
+	where $x_1$ and $x_2$ are the number of paperback and hardcover textbooks, respectively. The optimal solution is $x^* = (0, 400)$ with an optimal primal value $p^* = -30400$. The dual problem for this problem is
+	\begin{equation} \label{lp dual simple example 2}
+		\begin{aligned}
+			&\textnormal{Maximize } 450y_1 + 1200y_2 + 500y_3 \\
+			&\textnormal{subject to } \\
+			&0.5y_1 + 2 y_2 + y_3 &\leq -48, \\
+			&0.75y_1 +3y_2 + y_3 &\leq -76,
+			& y \leq 0.
+		\end{aligned}
+	\end{equation}
+	
+	The optimal solution is $y^* = (0, - \frac{76}{3}, 0)$ with an optimal dual value $d^* = -30400$. As we can see, strong duality holds since $p^* = d^* = -30400$. This means that in order to maximize our revenue, we should produce 400 hardcover books and no paperback books, for a revenue of $\$34000$. 
+	
+	
+	
+	
+	\subsection{Motivation to study past Linear Programming}
+	
+	Needless to say, linear programming restricts us to linear equations. This means that anything that we would wish to be more complicated is outside of the realm of possibilities for this type of problem. In the next two sections, we will take a look at conic programming and semidefinite programming. Conic programming is the larger theoretical umbrella that we will look at to help us with providing an abstract foundation. Semidefinite programming is a subset of conic programming that we will focus on in this paper. 
+	
+	\section{Conic Programming}
+	
+	Before we jump into semidefinite programming, we should first discuss conic programming. There are many theoretical concepts under the umbrella of conic programming which will help us to better understand semidefinite programming. 
+	
+	\subsection{Cones}
+	
+	As we study cones and continue on in this paper, we will often deal with Euclidean spaces. A \emph{Euclidean space} $E$ is a finite-dimensional vector space over the real numbers that is associated with an \emph{inner product} $\left< \cdot , \cdot \right>: E \times E \rightarrow \mathbf{R}$ that satisfies the following conditions $\forall x, y, z \in E$, $\alpha, \beta \in \mathbf{R}$:
+	
+	\begin{itemize}
+		\item $\left< \alpha x + \beta y, z \right> = \alpha \left<x, z \right> + \beta \left<y,z\right>$,
+		
+		\item $\left<x, y\right> = \left<y,x\right>$,
+		
+		\item $\left< x, x\right> \geq 0$, and $\left<x, x\right> = 0$ if and only if $x = 0$. 
+	\end{itemize}
+	Associated with the inner product is the concept of the \emph{norm} of an element $x \in E$, which is defined as $\|x\| := \sqrt{\left<x,x\right>}$.
+
+	In order to understand conic programming, we first need to know about cones. Let $C \subseteq E$, a Euclidean space. Then $C$ is a $\emph{cone}$ if $\forall x \in C, \lambda \geq 0, \lambda x \in C$. The set of \emph{positive semidefinite matrices} $\mathcal{S}^n_+$, which is an important set for us later on, is a cone.	
+	
+	We will start with some definitions that we will use in our proofs. 
+	
+	\begin{itemize}
+		\item $\bf{Cone:}$ Let $C \subseteq E$, a Euclidean space. Then $C$ is a cone if $\forall x \in C, \lambda \geq 0, \lambda x \in C$. 
+		
+		\item $\bf{Proper}$ $\bf{Cone:}$ A proper cone is a cone $C \subset \mathbf{R}^n$ that satisfies the following:
+			\begin{itemize}
+				\item $C$ is \emph{convex}, i.e., $\forall x, y \in C, 0 \leq \lambda \leq 1, \lambda x + (1 - \lambda) y \in C.$ 
+				\item $C$ is \emph{closed}, i.e., $\mathbf{R}^n \backslash C$ is open, or rather the complement of $C$ in $\mathbf{R}^n$ is open.
+				\item $C$ is \emph{solid}, i.e., $C$ has a non-empty interior.
+				\item $C$ is \emph{pointed}, i.e., $-C \bigcap C = \{0\}$. 
+			\end{itemize}
+		
+		\item $\bf{Dual}$ $\bf{Cone:}$ Given a cone $C \subseteq E$, its dual cone is $C^* := \{z \in E^* : \langle z,x \rangle_E \geq 0, \forall x \in C\}$.
+		
+		\item $\bf{Adjoint}$ $\bf{Operator:}$ Consider two Euclidean spaces $U$ and $V$, and a linear operator $\mathcal{A}: U \rightarrow V$. The adjoint operator of $\mathcal{A}$, denoted $\mathcal{A}^*$, is the unique linear map $\mathcal{A}^* : V \rightarrow U$ defined by 
+		$$
+		\langle \mathcal{A}^* v, u \rangle_U = \langle v, \mathcal{A} u \rangle_V, \qquad \forall u \in U, v \in V.
+		$$
+	\end{itemize}
+	
+	\subsection{Problem Formulation}
+	
+	Given a linear map $\mathcal{A} : U \rightarrow V$ from Euclidean space $U$ to Euclidean space $V$ and a proper cone $C \subset U$, the primal problem for a conic optimization problem has the form:
+	\begin{equation} \label{eqconicprimal}
+		\begin{split}
+			\textnormal{Minimize } & \langle c,x \rangle_U \\
+			\textnormal{subject to } & \mathcal{A}x = b, \\
+			& x \in C,
+		\end{split}
+	\end{equation}
+	where $b \in V$, $c \in U^* = U$ since $U$ is finite dimensional. The dual problem for a conic optimization problem has the form:
+	
+	\begin{equation} \label{eqconicdual}
+		\begin{split}
+			\textnormal{Maximize } & \langle y,b \rangle_V \\
+			\textnormal{subject to } & c - \mathcal{A}^*y \in C^*.
+		\end{split}
+	\end{equation}
+		
+	\subsection{Theorems}
+	
+	The following two useful theorems result from solving \cite[p.~21, Exercise 2.24]{BlekhermanGrigoriy;ParriloPabloA.;Thomas2013}.
+	
+	\begin{theorem}
+		$C^{**} = C$ if and only if $C$ is a closed convex cone.
+	\end{theorem}
+	
+	\begin{proof}
+		Let $C$ be a closed convex cone. We will first show that $C \subseteq C^{**}$. Let $x \in C$. Then $\forall z \in C^*, \langle x, z\rangle \geq 0$. Furthermore, $C^{**} = \{y \in E : \langle z, y \rangle \geq 0, \forall z \in C^*\}.$ This shows that $x \in C^{**}$, and thus $C \subseteq C^{**}$.
+	
+		We will now show that $C^{**} \subseteq  C$. Suppose $\exists x \in C^{**}$ such that $x \not\in C$. Since $C$ is nonempty and convex, the separating hyperplane theorem provides us with a nonzero vector $v$ such that 
+		$$
+		\langle v, x \rangle < 0 \leq \langle v, z \rangle, \qquad \forall z \in C.
+		$$
+		This implies that $v \in C^*$, which means that $\langle v, x \rangle \geq 0$ because $x \in C^{**}$. This creates a contradiction. As such, no such $x$ exists, and $C^{**} \subseteq C$. Thus, $C^{**} = C.$ 
+	\end{proof}	
+	\begin{theorem}
+		The dual cone $C^*$ of a proper cone $C$ is also a proper cone.
+	\end{theorem}
+	
+	\begin{proof}
+		In order to show that $C^*$ is a proper cone, we need to show that it is closed, convex, solid, and pointed. 
+		
+		$\mathbf{Closed: }$ Let $x \in E$. We will first show that $f(y) := \langle y, x \rangle$ is a continuous function. Let $\epsilon >0$ be given, and let $\delta > 0$ such that $\delta \|x\| < \epsilon$. Then $\forall \epsilon > 0$, if $\|z-y\| < \delta$, we have 
+		$$
+		|\langle z, x\rangle - \langle y, x\rangle| = |\langle z-y, x\rangle| \leq \|z-y\|\textnormal{ } \|x\| < \delta \|x\| < \epsilon.
+		$$
+		Thus, $f(y) = \langle y, x\rangle$ is continuous.
+		
+		Now let $z \in \bar{C^*}$, the complement of $C^*$, and let $0 < \epsilon < -\langle z,x\rangle$. Since the inner product is continuous, $\exists \delta > 0$ such that if $\|z-y\| < \delta$, then $|\langle z, x\rangle - \langle y, x \rangle | < \epsilon$. This implies that $\langle y, x \rangle < \langle z, x\rangle + \epsilon < 0$. Thus, Thus, if $\|z-y\| < \delta$, then $y \in \bar{C^*}$, which means that $\bar{C^*}$ is open and consequently  $C^*$ is closed. 
+		
+		$\mathbf{Convex: }$ $\forall x \in C, z_1 , z_2 \in C^*, 0 \leq \lambda \leq 1$, we see that
+		$$\langle \lambda z_1 + (1 - \lambda) z_2 , x \rangle = \langle \lambda z_1 , x \rangle + \langle (1 - \lambda) z_2 , x \rangle \geq 0.$$
+		Thus, $\lambda z_1 + (1 - \lambda) z_2 \in C^*$, so $C^*$ is convex.
+		
+		$\mathbf{Solid: }$ We will begin by showing that if $C \subseteq \mathbf{R}^n$ is a nonempty convex cone and $\textnormal{int}(C) = \emptyset$, then $C^*$ is not pointed.
+		
+		Since $C$ is nonempty and convex, the relative interior of C is also nonempty:
+		$$
+		\textnormal{relint}(C) := \{x \in C \mid \exists \epsilon > 0, B(x,\epsilon) \cap \textnormal{aff}(C) \subseteq C\},
+		$$
+		where $B(x, \epsilon) := \{y \in \mathbf{R}^n \mid \textnormal{ } \|x-y\|_2 \leq \epsilon\}$ and $\textnormal{aff}(C)$ is the smallest affine set containing $C$. Since $\textnormal{relint}(C) \neq \emptyset$ but $\textnormal{int}(C) = \emptyset$, it follows that $\textnormal{aff}(C) \neq \mathbf{R}^n$. 
+		Since $C$ is a cone, $0 \in C \subseteq \textnormal{aff}(C)$, so $\textnormal{aff}(C) = \textnormal{span}(C)$. 
+		
+		Thus, $\textnormal{span}(C) \neq \mathbf{R}^n$, which means that $\exists \lambda \in \mathbf{R}^n$, $\lambda \neq 0$, such that $\textnormal{span}(C) \subseteq \{ x \in \mathbf{R}^n \mid \lambda^T x = 0 \}$. This implies that $\lambda^T x = 0, \forall x \in C$, and $\lambda \in C^*$ and $-\lambda \in C^*$. Since $\lambda \neq 0$, we can conclude that $C^*$ is not pointed.
+		
+		Now recall that we are assuming that $C$ is a proper cone, meaning that it is closed, convex, and pointed. Then $C^{**} = C$. For $C^*$ to be solid, we want to show $\textnormal{int}(C^*) \neq \emptyset$. Suppose $\textnormal{int}(C^*) = \emptyset$. Then because we have shown that $C^*$ is a convex cone, we can conclude that $C^{**} = C$ is not pointed. This contradicts our assumption that $C$ is indeed pointed. As such, $C^*$ is solid. 
+		
+		$\mathbf{Pointed: }$ For point of contradiction, assume that $C^*$ is not pointed. Then $\exists z \in C^*$ such that $z \neq 0$ and $-z \in C^*$. This means that $\langle z, x \rangle \geq 0$ and $- \langle z, x \rangle \geq 0$ for all $x \in C$, and thus $\langle z, x \rangle = 0$ for all $x \in C$. This implies that $C$ is not solid since $C$ would be a subset of the hyperplane $\langle z, x \rangle = 0$, which contradicts the assumption that $C$ is a proper cone. Thus, $C^*$ is pointed. 
+	\end{proof}
+	
+	\section{Semidefinite Programming}
+	
+	Now that we have some powerful conclusions from Conic Programming, we can use these to attack semidefinite programming problems. As we will show, the set of semidefinite matrices is a proper cone. 
+	
+	Semidefinite matrices are symmetric, and the set of $n \times n$ real symmetric matrices is denoted $\mathcal{S}^n$. 
+	The set of $n \times n$ positive semidefinite matrices is denoted $\mathcal{S}^n_+$, and the set of $n \times n$ positive definite matrices is denoted $\mathcal{S}^n_{++}$. They are defined as
+	 
+	 \begin{itemize}
+	 	\item $\mathcal{S}^n_+ := \{A \in \mathcal{S}^n : x^T A x \geq 0, \forall x \in \mathbf{R}^n\}$ 
+	 	
+	 	\item $\mathcal{S}^n_{++} := \{A \in \mathcal{S}^n : x^T A x > 0, \forall x \neq 0\}$
+	 \end{itemize}
+	 
+	 It should be obvious that $\mathcal{S}^n_{+}$ is a cone since $\forall \lambda \geq 0$, if $A \in \mathcal{S}^n_+$, then $x^T(\lambda A)x = \lambda x^T A x \geq 0$, so $\lambda A \in \mathcal{S}^n_+$. 
+	 
+	 $\mathbf{Theorem:}$ $\mathcal{S}^n_+$ is a proper cone. 
+	 
+	\begin{proof}
+		In order to show that $\mathcal{S}^n_+$ is a proper cone, we need to show that it is closed, convex, solid, and pointed.
+		 
+		$\mathbf{Closed: }$ The complement of $\mathcal{S}^n_+$ in $\mathbf{R}^n$ is the set $C:= \{A \in \mathcal{S}^n : x^T A x < 0, \textnormal{ for some } x \in \mathbf{R}^n \}$. Let $\hat{A} \in C$. Then there exists a $\hat{x} \in \mathbf{R}^n$ such that $\hat{x}^T \hat{A} \hat{x} < 0$, and this statement remains true for all matrices in a sufficiently small neighborhood of $\hat{A}$. Therefore set $C$ is open, and thus $\mathcal{S}^n_+$ is closed.
+		
+		$\mathbf{Convex: }$ $\forall A, B \in \mathcal{S}^n_+$, $0 \leq \lambda \leq 1$, we have that $\forall x \in \mathbf{R}^n$, 
+		$$
+			x^T (\lambda A + (1- \lambda) B) x = \lambda (x^T A x) + (1 - \lambda) (x^T B x) \geq 0
+		$$
+		since $0 \leq \lambda \leq 1$ and $A, B \in \mathcal{S}^n_+$. Thus, $\lambda A + (1- \lambda) B \in \mathcal{S}^n_+$, so $\mathcal{S}^n_+$ is convex. 
+	
+		$\mathbf{Solid: }$ We want to show that we have a non-empty interior. We will first show that if $X$ is a symmetric matrix, then $\|X\|_F = \|\lambda(X)\|_2$, where $\lambda(X)$ is the vector of eigenvalues of $X$. We see that
+		$$
+		\|X\|_F = \sqrt{\textnormal{tr}(X^2)} = \sqrt{\sum_{i=1}^{n} \lambda_i^2} = \|\lambda(X)\|_2.
+		$$
+		In order to show we have a non-empty interior, we need at least one element our interior. We will pick to show that the $n \times n$ identity matrix $I$ is in our interior. Indeed, $I \in \mathcal{(S_+^n)}$. We want to show that $\exists \epsilon > 0$ such that $\|I - X\|_F = \|\lambda(I - X)\|_2 \leq \epsilon$ implies that $X \in \mathcal{S}_+^n$. We will try $\epsilon = 1$. 
+		
+		Considering the potential eigenvalues $\lambda$ of $X$, we would have $Xv = \lambda v$. Furthermore, the potential eigenvalues $\hat{\lambda}$ of $(I-X)$ would be $(I - X)w = w - Xw = (1 - \lambda)w = \hat{\lambda} w$. Thus, we have
+		$$
+		\|\lambda(I - X)\|_2 = \sqrt{\sum_{i=1}^{n} (1- \lambda_i)^2} \leq 1,
+		$$
+		where $\lambda_i$ is the $i$th eigenvalue of $X$. From this, we can see that $\lambda_i \geq 0$ for $i \in \{1, 2, \dots, n\}$ since otherwise $(1 - \lambda)^2 > 1$, which would violate our inequality. Since each eigenvalue of $X$ is non-negative, $X \in \mathcal{S}_+^n$. Therefore, $I \in \textnormal{int}(\mathcal{S}_+^n)$, and $\mathcal{S}_+^n$ is solid. 
+		
+		$\mathbf{Pointed: }$ Suppose that $A \in \mathcal{S}^n_+$ and $A \in \mathcal{S}^n_-$, where $\mathcal{S}^n_- := -\mathcal{S}^n_+ := \{A \in \mathcal{S}^n : x^T A x \leq 0, \forall x \in \mathbf{R}^n\}$.  Then $\forall x \in \mathbf{R}^n$, we have $x^T A x \geq 0$ and $x^T A x \leq 0$. Therefore, $x^T A x = 0$. We will use this to show that $A = 0$, the matrix of all zeros. Since $x^T A x = 0$ $\forall x \in \mathbf{R}^n$, it holds for $e_i$, the $i$th column of the $n \times n$ identity matrix. Thus, we have
+		$$
+		e_i^T A e_i = a_{ii}^2 = 0 \implies a_{ii} = 0,  \forall i \in \{1, 2, \dots, n\},
+		$$
+		where $a_{ii}$ is the entry of $A$ in the $i$th row and $i$th column. It would also work for a vector $e_{i,j}$ of all zeros except for the $i$th and $j$th positions, where the entries are $1$. Then we have
+		$$
+		e_{i,j}^T A e_{i,j} = a_{ii}^2 + 2 a_{ij} + a_{jj}^2 = 2 a_{ij} = 0 \implies a_{ij} = 0, \forall i,j \in \{1, 2, \dots, n\}.
+		$$
+		Thus, $A = 0$, and $\mathcal{S}_+^n$ is pointed.
+	\end{proof}
+	
+	\subsection{Problem Formulation}
+	
+	The primal problem for a semidefinite optimization problem has the form:
+	\begin{equation} \label{sdpprimal} \tag{SDP-P}
+		\begin{split}
+			\textnormal{Minimize } & \langle C,X \rangle \\
+			\textnormal{subject to } & \langle A_i, X \rangle = b_i, \qquad  i = 1, \dots, m\\
+			& X \succeq 0,
+		\end{split}
+	\end{equation}
+	where $C, A_i \in \mathcal{S}^n$ and $\langle X, Y \rangle := $ Tr($X Y$) $= \sum_{ij} X_{ij} Y_{ij}$. The dual problem for a semidefinite optimization problem has the form:
+	
+	\begin{equation} \label{sdpdual} \tag{SDP-D}
+		\begin{split}
+			\textnormal{Maximize } & b^T y \\
+			\textnormal{subject to } & \sum_{i=1}^{m} A_i y_i \preceq C,
+		\end{split}
+	\end{equation}
+	where $b = (b_1 , \dots, b_m)$, and $y = (y_1, \dots, y_m)$ are the dual decision variables.
+	
+	\subsection{Properties}
+	
+	Following along with Appendix A.1.1 of \cite{BlekhermanGrigoriy;ParriloPabloA.;Thomas2013}, we will list some equivalent statements about positive semidefinite matrices:
+	
+	\begin{itemize}
+		\item The matrix $A$ is positive semidefinite ($A \succeq 0$).
+		
+		\item For all $x \in \mathbf{R}^n$, $x^T A x \geq 0$.
+		
+		\item All eigenvalues of $A$ are nonnegative.
+		
+		%\item All $2^n - 1$ principal minors of $A$ are %nonnegative. 
+		
+		%\item The coefficients of $p_A (\lambda)$ weakly %alternate in sign, i.e.,, $(-1)^{n-k} p_k \geq 0$ for $k %= 0, \dots, n-1$. 
+		
+		%\item There exists a factorization $A = B B^T$, where $B %\in \mathbf{R}^{n \times r}$ and $r$ is the rank of $A$.
+		
+		\item There exists a factorization $A = B B^T$.
+	\end{itemize}
+	
+	\begin{proof}
+		Let $A$ be a positive semidefinite matrix. Suppose $\lambda$ is an eigenvalue of $A$. Then $\exists v \in \mathbf{R}^n$ such that $Av = \lambda v$. That means that $$
+		v^T A v = \lambda v^T v \geq 0,
+		$$
+		with the inequality being a result of the definition of semidefinite matrices. Since $v$ is an eigenvector, $v \ne 0$, so $v^Tv > 0$. As such, we know that $\lambda \geq 0$. As such, all eigenvalues of $A$ are nonnegative. 
+		
+		Continuing to use our positive semidefinite matrix $A$, since $A$ is a symmetric matrix, it has an eigenvalue decomposition of $A = V \Lambda V^T$, where $\Lambda = \textnormal{diag}(\lambda_1, \dots, \lambda_n)$ and the matrix $V$ is orthogonal, i.e., $V V^T = V^T V = I$. Taking the square root of the matrix $\Lambda$ as $\sqrt{\Lambda} := \textnormal(\sqrt{\lambda_1}, \dots, \sqrt{\lambda_n})$, and defining $B := V \sqrt{\Lambda}$, we have 
+		$$
+		A = V \Lambda V^T = V \sqrt{\Lambda} \sqrt{\Lambda} V^T = V \sqrt{\Lambda} (V \sqrt{\Lambda}^T)^T = V \sqrt{\Lambda} (V \sqrt{\Lambda})^T = B B^T,
+		$$
+		which shows that a positive semidefinite matrix has a factorization of form $A = B B^T$.
+		
+		To show that if a matrix $A := B B^T$ is positive semidefinite, it suffices to show that the following holds for all $x \in \mathbf{R}^n$:
+		$$
+		x^T A x = x^T B B^T x = \|B^T x\|_2^2 \geq 0.
+		$$
+		As such, $A$ must be positive semidefinite.
+	\end{proof}
+	
+	\subsection{Simple Example}
+	
+	The following example starts on page 11 of \cite{BlekhermanGrigoriy;ParriloPabloA.;Thomas2013}. As with the linear programming examples, we will leave out the steps for solving since we will discuss our solvers later in the chapter. 
+	
+	Consider the semidefinite optimization problem
+	\begin{equation} \label{SDP Example}
+		\begin{aligned}
+			\textnormal{Minimize } \quad 2x_{11} + 2x_{12}& \\
+			\textnormal{subject to } \quad x_{11} + x_{22}& = 1,\\
+			 \begin{bmatrix}
+				x_{11} & x_{12} \\
+				x_{21} & x_{22}
+			\end{bmatrix} &\succeq 0. 
+		\end{aligned}
+	\end{equation}
+	This problem has the form of \eqref{sdpprimal}, and here $m = 1$, $b_1 = 1$, 
+	$$
+	C = \begin{bmatrix}
+	2 & 1\\ 
+	1 & 0
+	\end{bmatrix}, \quad
+	A = \begin{bmatrix}
+	1 & 0 \\
+	0 & 1
+	\end{bmatrix}.
+	$$
+	For this problem, the optimal solution is
+	$$
+	X^* = \begin{bmatrix}
+		\frac{2- \sqrt{2}}{4} & -\frac{1}{2\sqrt{2}} \\
+		-\frac{1}{2\sqrt{2}} & \frac{2 + \sqrt{2}}{4}
+	\end{bmatrix},
+	$$
+	and the optimal value is $p^* = 1 - \sqrt{2}$. 
+	
+	The dual problem for \eqref{SDP Example} is 
+	\begin{equation}
+		\begin{aligned}
+			\textnormal{Maximize } &y \\
+			\textnormal{subject to } 
+		&	\begin{bmatrix}
+			2 - y & 1 \\
+			1 & -y
+			\end{bmatrix} \succeq 0. 
+		\end{aligned}
+	\end{equation}
+	The optimal solution for this problem is $y^* = 1 - \sqrt{2}$, with an optimal value of $d^* = 1 - \sqrt{2}$. In this example, we see that we end up with a zero duality gap since $p^* = d^* = 1 - \sqrt{2}$. 
+	
+	\subsection{Computational Complexity}
+	Something that is important to note is that our semidefinite programs will not always solve the exact program we are trying to solve. A natural question is why we would use methods that merely approximate the answer to our problem as opposed to directly solving the problem. The short answer is that certain applications that we can apply semidefinite programming to have been proven to be NP-hard. However, semidefinite programming can be solved to accuracy $\epsilon$ in polynomial time, as we will see when discussing our solvers.
+	\section{Solvers}
+	In order to explore our applications, we needed to pick a programming language that would give us access to solvers for semidefinite programming problems. The language that we decided to use Julia \cite{BEKS14}. We used its modeling language of JuMP in order to interact with our solvers \cite{DunningHuchetteLubin2015}.
+	
+	There are a few different ways to implement semidefinite programming. In order to get a sense for which are the most effective for which problem, we will use two different solvers: SCS Solver and MOSEK. The aim of this section is to give a brief introduction as to what these solvers are doing. 
+	
+	\subsection{SCS Solver}
+	
+	SCS Solver is based on using the alternating direction of multipliers (ADMM) to solve semidefinite programming problems \cite{ocpb:16}. ADMM is a convex optimization algorithm that dates back to the early 1980's that uses a first-order operator splitting method. It has gained some extra attention as of late because of its usefulness in machine learning and image processing applications. ADMM is often simple to run in a parallel manner, which is incredibly helpful for big data problems. It is typically used for applications that do not require a high level of accuracy since it has slow tail convergence \cite{eckstein2012augmented}.
+	
+	It has been shown by \cite{nishihara2015general} that ADMM has a linear convergence ``when one of the objective terms is strongly convex". This leads us to believe that SCS Solver will also have this rate of convergence. The article on the SCS Solver goes into detail about how it guarantees convergence, and provides detail on the algorithm's stopping criteria. The article on SCS Solver also includes information on how it handles scaling data, as well as examples and numerical experiments \cite{ocpb:16}. 
+	
+	\subsection{Mosek}
+	
+	Mosek uses an interior-point method in order to solve semidefinite programming problems \cite{mosek}. This method involves following a ``central path" in order to find its solution. After picking a point to start at, interior-point methods utilize Newton's method in order to choose a direction for the next point in the iteration, moving towards the optimal solution with each step. The step size is then determined by making sure that the step results in a point that is within the interior of the cone. A detailed explanation of interior-point methods can be found in \cite{Nocedal06}. According to \cite{Borchers1999a}, interior-point methods can be solved in polynomial time based on the number of variables and constraints used.
+	
