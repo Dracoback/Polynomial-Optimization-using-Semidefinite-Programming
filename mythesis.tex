@@ -7,10 +7,10 @@
 \usepackage{rotating}           % defines sidways table and figure env.
 \usepackage{amsmath}
 \usepackage{amsthm}
-\usepackage{apacite}
 \usepackage{color}
+\usepackage{hyperref}		% to insert hyperrefs
+\usepackage{apacite}
 \bibliographystyle{apacite}
-% \usepackage{hyperref}		% to insert hyperrefs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Some LaTeX macros
@@ -44,7 +44,6 @@
 % \def\files{ch2}
 
 \includeonly{\files}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
@@ -59,13 +58,7 @@
 \director{Nathan Krislock}
 
 \begin{abstract}
-  In this thesis, our goal is to solve the problem
-  \begin{displaymath}
-    \textnormal{Maximize } \gamma \textnormal{ subject to } p(x) - \gamma \textnormal{ is nonnegative.}
-  \end{displaymath}
-  We will show how we can reformulate this problem using semidefinite matrices to create an optimization problem that can handle multiple variables and constraints. 
-  
-  Our discussion will cover Lagrangian duality and conic programming, followed by a discussion on how nonnegative polynomials can be approximated by sums of squares. We will use this approximation to create our semidefinite programming problems. This will lead us to being able to solve the problem of wireless coverage using minimum transmission.
+  In this thesis, our goal is to minimize a polynomial $p(x)$ using semidefinite matrices. Our discussion will cover Lagrangian duality and conic programming, followed by a discussion on how nonnegative polynomials can be approximated by sums of squares. We will use this approximation to create our semidefinite programming problems. This will lead us to being able to solve the problem of wireless coverage using minimum transmission.
 \end{abstract}
 
 \begin{acknowledgments}
@@ -82,6 +75,9 @@
 
 % comment this to suppress prologue
 \MakeThesisPrologue % includes table of contents
+
+% \listoffigures
+% \listoftables
 % \tableofcontents
 
 \include{intro}
@@ -89,6 +85,7 @@
 \include{ch2}		% file with Chapter 2 contents
 \include{conclusion}
 \bibliography{biblio}		% file with references
+%\red{(Fix the \{\textasciitilde\} in the above reference.)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Appendices

@@ -1,10 +1,9 @@
 % !TEX root = mythesis.tex
 
-
 	\chapter{Polynomial Optimization}		% chapter 4
 	\label{PolyOpchap}		% for reference (\eqref{introchap})
 	
-	 The focus of this chapter will be on polynomial optimization. We will start with nonnegative polynomials and discuss how some of them may be represented as a sum of squares, then we will show the connection between sum of squares polynomials and semidefinite matrices. The motivation behind this is that we wish to formulate our optimization problems as
+	 The focus of this chapter will be on polynomial optimization. We will start with nonnegative polynomials and discuss how some of them may be represented as a sum-of-squares, then we will show the connection between sum-of-squares polynomials and semidefinite matrices. The motivation behind this is that we wish to formulate our optimization problems as
 	 $$
 	 \textnormal{Maximize } \gamma \quad \textnormal{subject to } \quad p(x_1, \dots, x_n) - \gamma \quad \textnormal{is nonnegative},
 	 $$
@@ -74,7 +73,7 @@
 	
 	\section{Sum of Squares}
 	
-	A multivariate polynomial $p(x_1, \dots, x_n)$ is a \emph{sum of squares} (sos) if it can be written as the sum of squares of some other polynomials. Formally, a polynomial $p(x) \in \mathbf{R}[x]_{n, 2d}$ is a sum of squares (sos) if there exist $q_1, \dots, q_m \in \mathbf{R}[x]_{n,d}$ such that 
+	A multivariate polynomial $p(x_1, \dots, x_n)$ is a \emph{sum-of-squares} (sos) if it can be written as the sum-of-squares of some other polynomials. Formally, a polynomial $p(x) \in \mathbf{R}[x]_{n, 2d}$ is a sum-of-squares (sos) if there exist $q_1, \dots, q_m \in \mathbf{R}[x]_{n,d}$ such that 
 	\begin{equation} \label{sos}
 		p(x) = \sum_{k=1}^{m} q_k^2(x). 
 	\end{equation}
@@ -102,9 +101,9 @@
 	%		$\mathbf{Pointed: }$ If $p \in \sum_{n, 2d}$ and $p \in -\sum_{n, 2d}$, then $p(x)$ is nonnegative since $p \in \sum_{n, 2d}$ and $p(x)$ is nonpositive since $p \in -\sum_{n, 2d}$, which implies that $p(x) = 0$. Thus, $\sum_{n, 2d}$ is pointed.
 	%	\end{proof}
 	
-	\subsection{When is nonnegativity equal to sum of squares?}
+	\subsection{When is nonnegativity equal to sum-of-squares?}
 	
-	Now that we know that $p(x) \in \sum_{n, 2d} \implies p(x) \in P_{n,2d}$, it is natural to ask when the converse holds true, i.e., when a nonnegative polynomial can be expressed as a sum of squares. David Hilbert proved that $P_{n,2d} = \sum_{n,2d}$ only in the following three cases:
+	Now that we know that $p(x) \in \sum_{n, 2d} \implies p(x) \in P_{n,2d}$, it is natural to ask when the converse holds true, i.e., when a nonnegative polynomial can be expressed as a sum-of-squares. David Hilbert proved that $P_{n,2d} = \sum_{n,2d}$ only in the following three cases:
 	\begin{itemize}
 		\item Univariate polynomials (i.e., $n = 1$).
 		
@@ -123,18 +122,18 @@
 		$$
 		(x - z_k)(x -z_k^*) = (x - a_k - ib_k)(x - a_k + ib_k) = x^2 - 2a_k x + a_k^2 + b_k^2 = (x - a_k)^2 + b_k^2.
 		$$
-		Thus, that portion of the polynomial is a sum of squares, and as such is positive. 
+		Thus, that portion of the polynomial is a sum-of-squares, and as such is positive. 
 		
 		Next we will show that the $n_j$'s must be even. Assume that there exists an $n_j$ which is odd. If we focus on this particular exponent, which we will call $n_{j_{\textnormal{odd}}}$, then the root $r_{j_{\textnormal{odd}}}$ must cause our polynomial to change signs, which contradicts our nonnegativity condition for $p(x)$. Thus, each of the $n_j$'s must be even.
 		
-		Finally, we will show that our polynomial is a sum of squares. Suppose that there exist two polynomials $q(x)$ and $t(x)$ which are sums of squares. Thus, they can be written in the forms $q(x) = \sum_{c=1}^{u} f_{c}^2 (x)$ and $t(x) = \sum_{d=1}^{v} g_{d}^2 (x)$. If we take their product, we obtain 
+		Finally, we will show that our polynomial is a sum-of-squares. Suppose that there exist two polynomials $q(x)$ and $t(x)$ which are sums of squares. Thus, they can be written in the forms $q(x) = \sum_{c=1}^{u} f_{c}^2 (x)$ and $t(x) = \sum_{d=1}^{v} g_{d}^2 (x)$. If we take their product, we obtain 
 		
 		$$\begin{aligned}
 		q(x)t(x) = \left(\sum_{c=1}^{u} f_{c}^2 (x)\right)\left(\sum_{d=1}^{v} g_{d}^2 (x)\right) &= \sum_{c=1}^{u} \left[f_{c}^2 (x)\left(\sum_{d=1}^{v} g_{d}^2 (x)\right)\right]\\
 		&= \sum_{c=1}^{u} \left[\sum_{d=1}^{v} f_{c}^2 (x)g_{d}^2 (x)\right]\\
 		&= \sum_{c=1}^{u} \left[\sum_{d=1}^{v} \left(f_{c}(x) *g_{d} (x)\right)^2\right].
 		\end{aligned}$$
-		As we can see, this means that a product of a sum of squares will also be a sum of squares. Since we are multiplying squares and sums of squares in order to form $p(x)$, it is indeed a sum of squares. 
+		As we can see, this means that a product of a sum-of-squares will also be a sum-of-squares. Since we are multiplying squares and sums of squares in order to form $p(x)$, it is indeed a sum-of-squares. 
 	\end{proof}
 	
 	\begin{proof} [Quadratic nonnegative polynomials are sos]
@@ -179,7 +178,7 @@
 	\begin{equation}
 		p(x) = p_{2d}x^{2d} + p_{2d-1}x^{2d-1} + \dots + p_1 x + p_0.
 	\end{equation}
-	Assume that $p(x)$ is a sum of squares, i.e., it can be expressed as in \eqref{sos}. It is important to note that the degree of the polynomials $q_k$ used for the sum of squares representation can be of degree of at most $d$. We can then write
+	Assume that $p(x)$ is a sum-of-squares, i.e., it can be expressed as in \eqref{sos}. It is important to note that the degree of the polynomials $q_k$ used for the sum-of-squares representation can be of degree of at most $d$. We can then write
 	\begin{equation} \label{sos matrix decomp}
 		\begin{bmatrix}
 		q_1 (x) \\ q_2 (x) \\ \vdots \\ q_m (x)
@@ -195,13 +194,13 @@
 	$$
 	This result leads to the following lemma.
 	\begin{lemma}
-		Let $p(x)$ be a univariate polynomial of degree $2d$. Then $p(x)$ is a sum of squares if and only if there exists a symmetric matrix $Q \in \mathcal{S}^{d+1}$ that satisfies
+		Let $p(x)$ be a univariate polynomial of degree $2d$. Then $p(x)$ is a sum-of-squares if and only if there exists a symmetric matrix $Q \in \mathcal{S}^{d+1}$ that satisfies
 		\begin{equation} \label{sos matrix condition}
 		p(x) = [x]_d^T Q [x]_d, \qquad Q \succeq 0.
 		\end{equation}
 	\end{lemma}
 	
-	We typically call the matrix $Q$ the \emph{Gram matrix} of the sum of squares representation. One part of this lemma follows from our properties of semidefinite matrices, as constructing the matrix $Q$ as $V^T V$ immediately gives us that $Q$ is positive semidefinite. For the other direction, assume that there exists a positive semidefinite matrix $Q$ which satisfies \eqref{sos matrix condition}. From there, we can factorize $Q = V^T V$ by using either Cholesky or square root factorization. This will provide us with our sum of squares decomposition of $p(x)$. 
+	We typically call the matrix $Q$ the \emph{Gram matrix} of the sum-of-squares representation. One part of this lemma follows from our properties of semidefinite matrices, as constructing the matrix $Q$ as $V^T V$ immediately gives us that $Q$ is positive semidefinite. For the other direction, assume that there exists a positive semidefinite matrix $Q$ which satisfies \eqref{sos matrix condition}. From there, we can factorize $Q = V^T V$ by using either Cholesky or square root factorization. This will provide us with our sum-of-squares decomposition of $p(x)$. 
 	
 	The condition \eqref{sos matrix condition} provides us with a semidefinite program. To see this, notice that the constraint $p(x) = [x]_d^T Q [x]_d$ is \emph{affine} in the matrix $Q$, and as such the set of possible Gram matrices $Q$ is given by the intersection of an affine subspace and the cone of positive semidefinite matrices. To obtain explicit equations for this semidefinite program, we will index the rows and columns of $Q$ by $\{0, \dots, d\}$ as 
 	$$
@@ -213,9 +212,9 @@
 	\end{equation}
 	This provides us with a system of $2d+1$ linear equations between the entries of $Q$ and the coefficients of $p(x)$. Therefore, since $Q$ is constrained to be positive semidefinite while also belonging to the affine subspace that is defined by our system of linear equations, we have that our sos condition is equivalent to a semidefinite programming problem. This means that we have shown the following lemma. 
 	\begin{lemma} \label{univariate polynomial sos condition}
-		A univariate polynomial $p(x) = \sum_{k=0}^{2d} p_k x^k$ is a sum of squares if and only if there exists a positive semidefinite matrix $Q \in \mathcal{S}^{d+1}$ satisfying \eqref{coefficient matrix equality}.
+		A univariate polynomial $p(x) = \sum_{k=0}^{2d} p_k x^k$ is a sum-of-squares if and only if there exists a positive semidefinite matrix $Q \in \mathcal{S}^{d+1}$ satisfying \eqref{coefficient matrix equality}.
 	\end{lemma}
-	Note that we have previously shown that nonnegativity and sum of squares are equivalent conditions in the univariate case. Thus, Lemma \ref{univariate polynomial sos condition} completely characterizes the set of univariate nonnegative polynomials and shows that the sets $P_{1, 2d}$ and $\sum_{1, 2d}$ are equal. 
+	Note that we have previously shown that nonnegativity and sum-of-squares are equivalent conditions in the univariate case. Thus, Lemma \ref{univariate polynomial sos condition} completely characterizes the set of univariate nonnegative polynomials and shows that the sets $P_{1, 2d}$ and $\sum_{1, 2d}$ are equal. 
 	
 	\subsection{Multivariate Polynomials}
 	
@@ -229,9 +228,9 @@
 	\begin{equation} \label{coefficient matrix equality multivariate}
 		p_{\alpha} = \sum_{\beta + \gamma = \alpha} Q_{\beta \gamma}, \qquad Q \succeq 0.
 	\end{equation}
-	This provides us with a system of $\binom{n+2d}{2d}$ linear equations, one for each coefficient of $p(x)$. As before, these equations are affine conditions that relate the entries of $Q$ to the coefficients of $p(x)$. This allows us to decide if a polynomial is a member of, or optimize over, the set of sos polynomials by solving an SDP program. This relationship between positive semidefinite matrices and sum of squares is summarized by the following theorem:
+	This provides us with a system of $\binom{n+2d}{2d}$ linear equations, one for each coefficient of $p(x)$. As before, these equations are affine conditions that relate the entries of $Q$ to the coefficients of $p(x)$. This allows us to decide if a polynomial is a member of, or optimize over, the set of sos polynomials by solving an SDP program. This relationship between positive semidefinite matrices and sum-of-squares is summarized by the following theorem:
 	\begin{theorem} \label{multivariate sos summary theorem}
-		A multivariate polynomial $p(x) = \sum_{\alpha} p_{\alpha} x^{\alpha}$ in $n$ variables and degree $2d$  is a sum of squares if and only if there exists $Q \in \mathcal{S}_{+}^{\binom{n+d}{d}}$ that satisfies \eqref{coefficient matrix equality multivariate}. As a consequence, membership in $\sum_{n, 2d}$ can be decided via semidefinite programming. 
+		A multivariate polynomial $p(x) = \sum_{\alpha} p_{\alpha} x^{\alpha}$ in $n$ variables and degree $2d$  is a sum-of-squares if and only if there exists $Q \in \mathcal{S}_{+}^{\binom{n+d}{d}}$ that satisfies \eqref{coefficient matrix equality multivariate}. As a consequence, membership in $\sum_{n, 2d}$ can be decided via semidefinite programming. 
 	\end{theorem}
 	
 	The size of the matrix of the semidefinite program that appears in \eqref{multivariate sos summary theorem} is $\binom{n+d}{d}$, which grows polynomially in the number of variables $n$ for a fixed degree $d$. If $n$ is fixed, it also grows polynomially in $d$ since $\binom{n+d}{d} = \binom{n+d}{n}$. 
@@ -260,7 +259,7 @@
 	
 	\section{Polynomial Optimization with Sum of Squares Programming}
 	
-	In this section, we will discuss how we can use sum of squares and semidefinite programming in order to solve both unconstrained and constrained optimization problems for univariate and multivariate polynomials. 
+	In this section, we will discuss how we can use sum-of-squares and semidefinite programming in order to solve both unconstrained and constrained optimization problems for univariate and multivariate polynomials. 
 	
 	\subsection{Unconstrained Univariate Polynomial Optimization}
 	
@@ -278,7 +277,7 @@
 	\begin{equation} \label{Opt-Sos} \tag{OPT-SOS}
 	\textnormal{Maximize } \gamma \quad \textnormal{subject to } \quad p(x) - \gamma \quad \textnormal{is sos}.
 	\end{equation}
-	The only difference between the two above formulas comes from the replacement of the nonnegativity condition with a sum of squares condition. As we have shown previously, these two conditions are equivalent for the univariate case. The form \eqref{Opt-Sos} is in the form of a sos program, which means that it is equivalent to a semidefinite program for us to solve. This results in us being able to use semidefinite programming to find the global minimum value for $p(x)$. Notice that even if $p(x)$ is highly nonconvex, we can still find its global minimum with convex optimization. 
+	The only difference between the two above formulas comes from the replacement of the nonnegativity condition with a sum-of-squares condition. As we have shown previously, these two conditions are equivalent for the univariate case. The form \eqref{Opt-Sos} is in the form of a sos program, which means that it is equivalent to a semidefinite program for us to solve. This results in us being able to use semidefinite programming to find the global minimum value for $p(x)$. Notice that even if $p(x)$ is highly nonconvex, we can still find its global minimum with convex optimization. 
 	
 	\subsection{Multivariate Unconstrained Polynomial Optimization}
 	
@@ -288,7 +287,7 @@
 	\textnormal{Maximize } \gamma \quad \textnormal{subject to } \quad p(x_1, \dots, x_n) - \gamma \quad \textnormal{is nonnegative}.
 	\end{equation}
 	
-	Since we do not wish for our constraint set to be nonnegative polynomials and would instead prefer to work with sos constraints, we can reformulate the global minimum as:
+	Since we do not wish for our constraint set to be nonnegative polynomials and would instead prefer to work with sos constraints, we can relax the global minimum as:
 	
 	\begin{equation} \label{Mopt-Sos} \tag{MOPT-S0S}
 	\textnormal{Maximize } \gamma \quad \textnormal{subject to } \quad p(x_1, \dots, x_n) - \gamma \quad \textnormal{is sos}.
@@ -298,13 +297,14 @@
 	$$
 	p_{sos} \leq p_*,
 	$$
-	providing us with a lower bound on the global minimum of $p(x_1, \dots, x_n)$. This is expected since multivariate polynomial optimization is NP-hard while semidefinite programming is polynomial-time to a given accuracy. 
+	providing us with a lower bound on the global minimum of $p(x_1, \dots, x_n)$. This is expected since multivariate polynomial optimization is NP-hard while semidefinite programming is solvable in polynomial-time to a given accuracy. 
 	
 	\subsection{Constrained Optimization}
 
 	It is natural to question how we may rewrite our optimization problems if we only are concerned with a polynomial $p(x)$ being nonnegative over a subset $S \subset \mathbf{R}^n$. In other words, is there a way to consider constraints in our optimization formulation? We will consider separately sets $S$ defined by equalities, inequalities, and a combination of them.
 	
-	We will start by considering equality constraints. Consider a set $S$ described by polynomial equations, i.e. of the form
+	We will start by considering equality constraints. Consider a set $S$ described by polynomial equations, i.e., of the form
+	
 	$$
 	S = \{x \in \mathbf{R}^n \mid f_1(x) = 0, \dots, f_m(x) = 0\}.
 	$$
@@ -314,17 +314,18 @@
 	\end{equation}
 	where $\lambda_i(x)$ are arbitrary polynomials. This condition obviously implies that $p(x)$ is nonnegative on $S$, since our summation disappears and we are left with a sos (and thus, nonnegative) $p(x)$. If we restrict the degrees of the $\lambda_i$'s, our condition has the form of an sos program.
 	
-	Now let us consider sets $S$ that are formed using inequalities. Consider a set $S$ described by polynomial inequalities, i.e. of the form
+	Now let us consider sets $S$ that are formed using inequalities. Consider a set $S$ described by polynomial inequalities, i.e., of the form
 	$$
 	S = \{x \in \mathbf{R}^n \mid g_1(x) \geq 0, \dots, g_m(x) \geq 0\}.
 	$$
-	Following a similar approach that resulted \eqref{equal constraints}, we can consider expressing $p(x)$ as 
+	Following a similar approach to the one that gave us \eqref{equal constraints}, we can consider expressing $p(x)$ as 
+	
 	\begin{equation} \label{inequal constraints}
 		p(x) = s_0 (x) + \sum_{i=1}^{m} s_i (x) g_i (x),
 	\end{equation}
-	where $s_0 (x)$ and $s_i (x)$ are sos polynomials. By doing this, we guarantee that $p(x)$ will be nonnegative on the set $S$ since all parts of the representation will be positive. This would give a way of expressing the constraining set as a part of our optimization problem.
+	where $s_0 (x)$ and $s_i (x)$ are sos polynomials. By doing this, we guarantee that $p(x)$ will be nonnegative on the set $S$ since all parts of the representation will be positive. This gives us a way of incorporating constraints in our optimization problem.
 	
-	It is natural to ask how we may certify nonnegativity on a set $S$ defined by both polynomial equations and inequalities, i.e. of the form 
+	It is natural to ask how we may certify nonnegativity on a set $S$ defined by both polynomial equations and inequalities, i.e., of the form 
 	$$
 	S = \{x \in \mathbf{R}^n \mid f_1 (x) = 0, \dots, f_k (x) = 0, g_1 (x) \geq 0, \dots, g_m (x) \geq 0\}.
 	$$
@@ -344,8 +345,13 @@
 	
 		\subsection{Numerical Experiments}
 		
-		In order to get a sense of how these two different methods of solving compare, we can run each of them through a set of benchmark problems. This will help us determine when one solver may be at an advantage over the other. Our first benchmark problem comes from \cite{BlekhermanGrigoriy;ParriloPabloA.;Thomas2013}, with the rest being randomly created custom problems. The results of our benchmarking are listed in the table below. For ease of reading, the CPU times are rounded to the nearest hundredth of a second. To see the code that we implemented for this table, visit $Github link here$.
+		In order to get a sense of how these two different methods of solving compare, we can run each of them through a set of benchmark problems. This will help us determine when one solver may be at an advantage over the other. Our first benchmark problem comes from \cite{BlekhermanGrigoriy;ParriloPabloA.;Thomas2013}, with the rest being randomly created custom problems. The results of our benchmarking are listed in the table below. For ease of reading, the CPU times are rounded to the nearest hundredth of a second. To see the code that we implemented for this table, visit \href{https://github.com/Dracoback/Polynomial-Optimization-using-Semidefinite-Programming/tree/master/Benchmark\%20Problems}{this link}.
 		
+		%\red{(Make this link clickable.)}
+		%\blue{(How? Hyperref seems to create all sorts of errors when I attempt to use that package.)}
+		%\red{(The solution was to put hyperref before the apacite package. See \href{https://latex.org/forum/viewtopic.php?t=5511}{this link}.)}
+		
+		\begin{table}
 		\begin{center}
 			\begin{tabular}{||c | c | c | c | c | c||} 
 				\hline
@@ -393,13 +399,15 @@
 				\hline				
 			\end{tabular}
 		\end{center} 
+		\caption{Numerical experiments run on both solvers.}
+		\end{table}
 	The table points out some interesting trends. The number of variables and the number of constraints do not seem to have a profound impact on the time of computation on their own. The degree of the polynomial seems to have the greatest impact on the CPU time, especially for Mosek. 
 	
 	\subsection{Application: Wireless Coverage using Minimum Transmission}
 	
 	The work here recreates one of the application problems posed by \cite{Ahmadi2016a}.
 	
-	In this problem, we are given $n$ wireless electromagnetic transmitters whose positions $(\bar{x}_i , \bar{y}_i), \i = 1, \dots, n$ are known, and we are told that we would like to achieve a certain coverage level over certain areas around these transmitters while minimizing the overall transmission rates coming from the transmitters. Each transmitter emits waves in all directions with equal intensity. We are provided with an equation for determining the amount of energy $E_i$coming from each transmitter from the laws of electromagnetics:
+	In this problem, we are given $n$ wireless electromagnetic transmitters whose positions $(\bar{x}_i , \bar{y}_i), \i = 1, \dots, n$ are known, and we are told that we would like to achieve a certain coverage level over certain areas around these transmitters while minimizing the overall transmission rates coming from the transmitters. Each transmitter emits waves in all directions with equal intensity. We are provided with an equation for determining the amount of energy $E_i$ coming from each transmitter from the laws of electromagnetics:
 	$$
 	E_i (x,y) = \frac{c_i \lambda}{(x - \bar{x}_i)^2 + (y - \bar{y}_i)^2},
 	$$
@@ -426,44 +434,58 @@
 		\begin{aligned}
 		\textnormal{Minimize } \qquad &\sum_{i=1}^{n} c_i \\
 		\textnormal{subject to } p =& \sigma_{j, 0} + \sum_{i=1}^{k_{j}} \sigma_{j, i} g_{j, i}, & \quad j = 1 \dots m,\\
-		&\sigma{j, 0}, \sigma{j, i}, & \quad \textnormal{sos},
+		&\sigma_{j, 0}, \sigma_{j, i}, & \quad \textnormal{sos},
 		\end{aligned}
 	\end{equation}
 	where $p$ is the same as in \eqref{p} and $\sigma{j, 0}, \sigma{j, i}$ are bivariate polynomials whose degree is upper bounded by some even integer $d$. This provides us with a semidefinite program to solve.
 	
-	Our code for the following problems is available here: $\textnormal{insert github link here}$.
+	Our code for the following problems is available  \href{https://github.com/Dracoback/Polynomial-Optimization-using-Semidefinite-Programming/tree/master/Application%20-%20Wireless%20Transmission%20Problems}{here}.
+	%\red{(Make this link clickable)}
+	
 	
 	\textbf{Example 1 - Two Transmitters and Five Regions}
 	
 	We now use this to solve a concrete example. We are given two transmitters whose upper bounds for their transmission rates are both $11$. The first transmitter is located at $(1, 1.5)$, while the second transmitter is located at $(2, 1)$. We are given five ellipsoidal regions to cover:
 	$$
 	\begin{aligned}
-	&\beta_1 = \{(x,y) : 0.01-3(x-1.1)^2-2(x-1.1)*(y-1.75)-(y-1.75)^2 \geq 0\},\\
+	&\beta_1 = \{(x,y) : 0.01-3(x-1.1)^2-2(x-1.1)(y-1.75)-(y-1.75)^2 \geq 0\},\\
 	&\beta_2 = \{(x,y) : 0.01-(x-1.25)^2-3(y-2)^2 \geq 0\},\\
 	&\beta_3 = \{(x,y) : 0.01-(x-1.5)^2-(y-1.75)^2 \geq 0\},\\
-	&\beta_4 = \{(x,y) : 0.01-(x-1.8)^2+2*(x-1.8)*(y-1.8)-3*(y-1.8)^2 \geq 0\},\\
+	&\beta_4 = \{(x,y) : 0.01-(x-1.8)^2+2(x-1.8)(y-1.8)-3(y-1.8)^2 \geq 0\},\\
 	&\beta_5 = \{(x,y) : 0.02-5(x-2)^2-(y-1.4)^2 \geq 0\}.
 	\end{aligned}
 	$$
 	Each of these areas has a required energy level of $10$. 
 	
-	A natural question to consider is if both transmitters are even necessary. If we remove one transmitter at a time from our problem, we see that transmitter 1 (located at $(1, 1.5)$) would need a transmission rate of $11.446$ and transmitter 2 (located at $(2,1)$) would need a transmission rate of $17.594$. As both of these numbers is above our upper bounds for transmission rates, we can clearly see that both transmitters will be necessary. When we include both transmitters and set our sos polynomials to degree $2$, we end up with an optimal solution of $c_1 = 2.554$ and $c_2  = 5.564$, for a cumulative transmission rate of $8.118$. 
+	A natural question to consider is if both transmitters are even necessary. If we remove one transmitter at a time from our problem, we see that transmitter 1 (located at $(1, 1.5)$) would need a transmission rate of $11.446$ and transmitter 2 (located at $(2,1)$) would need a transmission rate of $17.594$. As both of these numbers are above our upper bounds for transmission rates, we can clearly see that both transmitters will be necessary. When we include both transmitters and set our sos polynomials to degree $2$, we end up with an optimal solution of $c_1 = 2.554$ and $c_2  = 5.564$, for a cumulative transmission rate of $8.118$. 
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.4]{fig}
+		\caption{Two Transmitters with Five Regions}
+	\end{figure}
 	
 	When we ran this example with both of our solvers, Mosek had no problems finding our optimal solution very quickly, with a CPU time of 0.02 seconds. SCS Solver, on the other hand, was unable to obtain the optimal solution. Even after increasing the number of iterations allowed, SCS Solver was unable to determine the optimal solution.  
+	\pagebreak
 	
 	\textbf{Example 2 - Three Transmitters and Eight Regions}
 	
 	Now our company has acquired a third transmitter in this area, located at $(1.5, 2.5)$. In addition, we are given three more ellipsoidal regions to cover:
 	$$
 	\begin{aligned}
-	&\beta_6 = \{(x,y) : 0.02-4(x-1.6)^2+2*(x-1.6)*(y-2.3)-2*(y-2.3)^2 \geq 0\},\\
+	&\beta_6 = \{(x,y) : 0.02-4(x-1.6)^2+2(x-1.6)(y-2.3)-2(y-2.3)^2 \geq 0\},\\
 	&\beta_7 = \{(x,y) : 0.01-3(x-0.9)^2-(y-2.3)^2 \geq 0\},\\
-	&\beta_8 = \{(x,y) :0.02-2(x-1.55)^2+2*(x-1.55)*(y-2.8)-2*(y-2.8)^2 \geq 0\}.
+	&\beta_8 = \{(x,y) :0.02-2(x-1.55)^2+2(x-1.55)(y-2.8)-2(y-2.8)^2 \geq 0\}.
 	\end{aligned}
 	$$
 	Each of these areas also has a required energy level of $10$. 
 	
 	Running our solver on the updated problem, we see that it is indeed possible to obtain our goal of obtaining the required coverage over all of the regions. In fact, with our new transmitter, we end up having a smaller overall transmission rate! Our new solution was $c_1 = 0.305$, $c_2 = 1.830$, and $c_3 = 4.451$, resulting in a cumulative transmission rate of $6.586$.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.4]{fig3}
+		\caption{Three Transmitters with Eight Regions}
+	\end{figure}
 	
 	In fact, the numbers are so low that it is natural to ask if we even need all three towers. Can our newest transmission tower handle all of the regions on its own? In short, no. Without the other towers, we would need $c_3 = 17.969$. It then begs the question of if we need all three towers. Running some experiments, we determine that we can remove either of the first two transmitters and still be okay. However, it is impossible to cover all eight regions if we remove the newest transmitter.
 	
